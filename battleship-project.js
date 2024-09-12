@@ -55,10 +55,10 @@ const battleshipGame = {
 
         cell.hit = true; // Mark the cell as hit
         if(cell.hasShip) {
-            console.log('Hit!');
+            console.log('You hit a ship!')
             return true; // Successful hit
         } else {
-            console.log('Miss!');
+            console.log('Miss!')
             return false;
         }
     },
@@ -67,12 +67,13 @@ const battleshipGame = {
         return board.every(row => row.every(cell => !cell.hasShip || (cell.hasShip && cell.hit)));
     },
 
-
+    // Placing ships 
     placeShipsRandomly(board) {
         for (const ship of this.ships) {
             let placed = false;
             while (!placed) {
-                const isHorizontal = Math.random() < 0.5; // Randomly decide the orientation
+                // Randomly decide the orientation. The condition < 0.5 is used to split the range of possible values into two equal halves: one for horizontal and one for vertical.
+                const isHorizontal = Math.random() < 0.5; 
                 const startRow = Math.floor(Math.random() * this.gridSize);
                 const startCol = Math.floor(Math.random() * this.gridSize);
     
@@ -86,12 +87,12 @@ const battleshipGame = {
     },
     
     // Helper function to check if a ship can be placed
-    canPlaceShip(board, row, col, size, isHorizontal) {
-        for (let i = 0; i < size; i++) {
-            const r = isHorizontal ? row : row + i;
-            const c = isHorizontal ? col + i : col;
+    canPlaceShip(board, row, col, size, isHorizontal) { 
+        for (let i = 0; i < size; i++) { // iterating over the length of the ship size 
+            const r = isHorizontal ? row : row + i; // if the ship is horizontal, the row remains the same but the column changes, meaning the ship is placed across columns (left to right).
+            const c = isHorizontal ? col + i : col; // if the ship is vertical, the row changes, but the column remains the same, meaning the ship is placed down rows (top to bottom).
     
-            if (r >= this.gridSize || c >= this.gridSize || board[r][c].hasShip) {
+            if (r >= this.gridSize || c >= this.gridSize || board[r][c].hasShip) { // check if the current ship placement is invalid
                 return false; // Out of bounds or overlap detected
             }
         }
@@ -101,8 +102,8 @@ const battleshipGame = {
     // Helper function to place the ship on the board
     placeShip(board, row, col, size, isHorizontal) {
         for (let i = 0; i < size; i++) {
-            const r = isHorizontal ? row : row + i;
-            const c = isHorizontal ? col + i : col;
+            const r = isHorizontal ? row : row + i; // moving the ship downward across rows 
+            const c = isHorizontal ? col + i : col; // moving the ship to the right across columns
             board[r][c].hasShip = true; // Mark the cells where the ship is placed
         }
     },
@@ -115,38 +116,69 @@ const battleshipGame = {
         const enemyBoard = this.initBoard();
 
 
-        this.placeShipsRandomly(enemyBoard); // Place enemy ships
+        this.placeShipsRandomly(enemyBoard); // Placing enemy ships
 
         console.log('Welcome to Battleship!');
-        while(true) {
-            this.printBoard(enemyBoard); // Show the board to the player
 
-            const input = prompt('Enter coordinates (e.g., A4):').toUpperCase(); // Get the player input
+        while(true) {
+            this.printBoard(enemyBoard); // Shows the board to the player
+
+            let input = prompt('Enter coordinates (e.g., A4):').toUpperCase(); // Gets the player input
+
+
+            //Input validation: makes sure input is at least 2 characters long and the number is valid
+            while(
+                input.length < 2 || 
+                input[0] < 'A' || input[0] > 'J' || // checking if the letter is between A and J
+                isNaN(input.slice(1)) || // checking if the second part is a number
+                parseInt(input.slice(1)) < 1 || parseInt(input.slice(1)) > 10 // ensures the number is btw 1-10 
+                ) {
+                console.log('Invalid input. Please enter a letter (A-J) followed by a number (1-10)')
+                input = prompt('Enter coordinates (e.g., A4):').toUpperCase();
+            } 
 
 
             if(input === 'QUIT') {
-                console.log('Game over');
+                console.log('Game over! Thank you for playing Battleship!');
                 break;
             }
 
+
             // Take a shot and handle result
-            if(this.takeShot(enemyBoard, input)) {
-                console.log('You hit a ship!');
+            const shotResult = this.takeShot(enemyBoard, input);
+
+            if(shotResult) {
+                // taking the console.log from method takeShot
             } else {
-              console.log('You missed!');
+                
             }
+
+
 
             // Checking if all ships are sunk
             if(this.checkAllShipsSunk(enemyBoard)) {
                 console.log('You sank all the enemy ships! You win!');
+                
+                const playAgain = prompt('Another round? (yes/no): ').toLowerCase()
+
+                if (playAgain === 'yes')
+                    this.startGame(); 
+                    return;
+            } else {
+                console.log('Thanks for playing!')
                 break;
             }
         }
     }
-    };
+ }
 
     battleshipGame.startGame();
 
 
-
-
+/*    
+        'Carrier', size: 5
+        'Battleship', size: 4
+        'Cruiser', size: 3
+        'Submarine', size: 3
+        'Destroyer', size: 2
+*/
