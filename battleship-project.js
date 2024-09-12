@@ -147,12 +147,6 @@ const battleshipGame = {
             // Take a shot and handle result
             const shotResult = this.takeShot(enemyBoard, input);
 
-            if(shotResult) {
-                // taking the console.log from method takeShot
-            } else {
-                
-            }
-
 
 
             // Checking if all ships are sunk
@@ -161,16 +155,17 @@ const battleshipGame = {
                 
                 const playAgain = prompt('Another round? (yes/no): ').toLowerCase()
 
-                if (playAgain === 'yes')
+                if (playAgain === 'yes') {
                     this.startGame(); 
                     return;
-            } else {
-                console.log('Thanks for playing!')
-                break;
-            }
+            } 
+            break;
         }
     }
- }
+
+    console.log('Thank you for playing Battleship!')
+    }
+ };
 
     battleshipGame.startGame();
 
