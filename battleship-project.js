@@ -155,8 +155,15 @@ const battleshipGame = {
             // Checking if all ships are sunk
             if(this.checkAllShipsSunk(enemyBoard)) {
                 console.log('You sank all the enemy ships! You win!');
+
+                let playAgain;
+                do {
+                    playAgain = prompt('Another round? (yes/no): ').toLowerCase()
+                    if (playAgain !== 'yes' && playAgain !== 'no') {
+                        console.log('Invalid input. Please answer "yes" or "no".');
+                    }
+                } while (playAgain !== 'yes' && playAgain !== 'no')
                 
-                const playAgain = prompt('Another round? (yes/no): ').toLowerCase()
 
                 if (playAgain !== 'yes') {
                     console.log('Thank you for playing Battleship!')
