@@ -34,7 +34,7 @@ Player wins when all enemy ships are destroyed.
 Grid and result are displayed after each shot.
 
 ## Technical Features
-Console-Based: No DOM manipulation, runs in the terminal.
+Console-Based: it runs entirely in the terminal.
 Grid Mapping: Rows labeled with letters A-J, columns 1-10.
 Input Handling: Converts user input (e.g., A4) to grid coordinates.
 Random Ship Placement: Ensures a fresh layout in every game.
