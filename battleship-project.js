@@ -108,14 +108,15 @@ const battleshipGame = {
         }
     },
 
-
     // STARTING THE GAME
+       
 
     startGame() {
+        let playing = true; 
+
+        while (playing) {
         const playerBoard = this.initBoard();
         const enemyBoard = this.initBoard();
-
-
         this.placeShipsRandomly(enemyBoard); // Placing enemy ships
 
         console.log('Welcome to Battleship!');
@@ -124,24 +125,26 @@ const battleshipGame = {
             this.printBoard(enemyBoard); // Shows the board to the player
 
             let input = prompt('Enter coordinates (e.g., A4):').toUpperCase(); // Gets the player input
+        
 
 
             //Input validation: makes sure input is at least 2 characters long and the number is valid
             while(
                 input.length < 2 || 
-                input[0] < 'A' || input[0] > 'J' || // checking if the letter is between A and J
+                (input !== 'QUIT' && (input[0] < 'A' || input[0] > 'J' || // checking if the letter is between A and J
                 isNaN(input.slice(1)) || // checking if the second part is a number
-                parseInt(input.slice(1)) < 1 || parseInt(input.slice(1)) > 10 // ensures the number is btw 1-10 
+                parseInt(input.slice(1)) < 1 || parseInt(input.slice(1)) > 10)) // ensures the number is btw 1-10 
                 ) {
                 console.log('Invalid input. Please enter a letter (A-J) followed by a number (1-10)')
-                input = prompt('Enter coordinates (e.g., A4):').toUpperCase();
+                input = prompt('Enter coordinates (e.g., A4 or type QUIT to exit):').toUpperCase();
             } 
 
-
-            if(input === 'QUIT') {
+            if(input.toUpperCase() === 'QUIT') {
                 console.log('Game over! Thank you for playing Battleship!');
+                playing = false;
                 break;
             }
+
 
 
             // Take a shot and handle result
@@ -155,19 +158,18 @@ const battleshipGame = {
                 
                 const playAgain = prompt('Another round? (yes/no): ').toLowerCase()
 
-                if (playAgain === 'yes') {
-                    this.startGame(); 
-                    return;
+                if (playAgain !== 'yes') {
+                    console.log('Thank you for playing Battleship!')
+                    playing = false;
             } 
             break;
         }
+      }
     }
+  }
+};
 
-    console.log('Thank you for playing Battleship!')
-    }
- };
-
-    battleshipGame.startGame();
+battleshipGame.startGame();
 
 
 /*    
