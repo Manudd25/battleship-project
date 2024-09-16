@@ -1,4 +1,4 @@
-# battleship-project
+# Battleship-Project
 
 ## Project Overview
 A classic Battleship game implemented using JavaScript.
